@@ -278,7 +278,7 @@ class Sardonic {
       '-safe', '0',
       '-i', concatFile,
       '-vf', glitchFilter,
-      '-c:v', 'libx264',
+      '-c:v', 'h264',
       '-pix_fmt', 'yuva420p',
       '-preset', 'medium',
       '-crf', '23',
@@ -344,6 +344,19 @@ class Sardonic {
     console.log(`   Margin: ${margin}px`);
     console.log('='.repeat(60) + '\n');
 
+    // Get input video duration to calculate loop count
+    let inputDuration = 0;
+    try {
+      const probeOutput = execSync(`ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${inputVideo}"`, {
+        encoding: 'utf-8'
+      });
+      inputDuration = parseFloat(probeOutput.trim());
+      console.log(`   Input duration: ${inputDuration.toFixed(1)}s`);
+      console.log(`   Sardonic duration: ${this.totalDuration}s`);
+    } catch (e) {
+      console.warn('   Could not detect input duration, using stream_loop');
+    }
+
     // Calculate position
     let x, y;
     switch (position) {
@@ -368,17 +381,22 @@ class Sardonic {
         y = `main_h-overlay_h-${margin}`;
     }
 
+    // Calculate how many times to loop sardonic to cover input duration
+    const loopCount = inputDuration > 0 ? Math.ceil(inputDuration / this.totalDuration) : 50;
+
     const args = [
       '-i', inputVideo,
+      '-stream_loop', (loopCount - 1).toString(),
       '-i', this.outputFile,
-      '-filter_complex', `[1:v]format=yuva420p[overlay];[0:v][overlay]overlay=${x}:${y}:shortest=1`,
-      '-c:v', 'libx264',
+      '-filter_complex', `[0:v]fps=25[base];[1:v]fps=25[overlay];[base][overlay]overlay=${x}:${y}:shortest=0:format=auto`,
+      '-c:v', 'h264',
       '-c:a', 'copy',
       '-preset', 'medium',
       '-crf', '23',
+      '-t', inputDuration > 0 ? inputDuration.toString() : undefined,
       '-y',
       outputVideo
-    ];
+    ].filter(arg => arg !== undefined);
 
     console.log('🎬 Compositing video...\n');
 
@@ -550,4 +568,4 @@ TIPS:
     });
 }
 
-module.exports = Sardonic;
+export default Sardonic;

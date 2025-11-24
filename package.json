@@ -7,10 +7,26 @@
     "sardonic": "./sardonic.js"
   },
   "scripts": {
+    "save": "git add .; git commit -m 'Updated Release'; npm version patch; npm publish; git push --follow-tags;",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module"
+  "type": "module",
+
+  "author": "catpea (https://github.com/catpea)",
+  "license": "MIT",
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/catpea/sardonic.git"
+  },
+  "bugs": {
+    "url": "https://github.com/catpea/sardonic/issues"
+  },
+  "homepage": "https://catpea.github.io/sardonic",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/catpea"
+  }
+
 }
