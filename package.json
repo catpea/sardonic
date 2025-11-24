@@ -1,6 +1,6 @@
 {
   "name": "sardonic",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Corner-dwelling chaos creature inspired with a glitchy aesthetic",
   "main": "sardonic.js",
   "bin": {
@@ -12,10 +12,8 @@
   },
   "keywords": [],
   "type": "module",
-
   "author": "catpea (https://github.com/catpea)",
   "license": "MIT",
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/catpea/sardonic.git"
@@ -28,5 +26,4 @@
     "type": "github",
     "url": "https://github.com/sponsors/catpea"
   }
-
 }
