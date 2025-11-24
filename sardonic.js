@@ -449,8 +449,8 @@ if (isMainModule) {
     frameDir: samplesDir,
     output: 'sardonic.mp4',
     duration: 15,
-    size: 320,
-    maxFrameDuration: 2,
+    size: 128,
+    maxFrameDuration: .8,
     minFrameDuration: 0.1,
     maxRotation: 15,
     glitchLevel: 1
